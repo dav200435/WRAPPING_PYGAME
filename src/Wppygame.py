@@ -39,6 +39,7 @@ class Wppygame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False 
+            keys = pygame.key.get_pressed()
             
             personaje.movements()
                    
