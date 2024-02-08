@@ -62,10 +62,13 @@ arriba y abajo
 '''                  
 class AnimationCharacter (pygame.sprite.Sprite):
     
-    def __init__(self, filename, rows, cols, velocity = 10):
+    def __init__(self, filename, rows, cols, DownKey,UpKey,RightKey,leftKey,velocity = 10):
         super().__init__()
         self.spreatSheet = SpreatSheets(filename, rows, cols)
-        
+        self.DownKey=DownKey
+        self.UpKey=UpKey
+        self.LeftKey=leftKey
+        self.RightKey=RightKey
         #estas son las listas donde guardamos cada uan de las imágenes dependiendo
         #del movimiento que realiza
         self.animationUP = self.spreatSheet.getAnimationUP()
@@ -111,33 +114,36 @@ class AnimationCharacter (pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         # Mover el rectángulo
-        if keys[pygame.K_a]:
+        if keys[pygame.K_+self.LeftKey]:
             self.rect.x -= self.velocity
             self.direction = "LEFT"
-        if keys[pygame.K_d]:
+        if keys[pygame.K_+self.RightKey]:
             self.rect.x += self.velocity
             self.direction = "RIGHT"
-        if keys[pygame.K_w]:
+        if keys[pygame.K_+self.UpKey]:
             self.rect.y-= self.velocity
             self.direction = "UP"
-        if keys[pygame.K_s]:
+        if keys[pygame.K_+self.DownKey]:
             self.rect.y+= self.velocity
             self.direction = "DOWN"
  
  
  ############################### La parte que crea la pantalla y añade los personajes ##############
 pygame.init()
-screen = pygame.display.set_mode((800, 600), pygame.FULLSCREEN) #800x600 by default  
+screen = pygame.display.set_mode((800, 600)) #800x600 by default  
     
 # FPS
 fpsClock = pygame.time.Clock()
 
 # Crear los personajes se realiza a través de los grupos de sprites
 # es una lista 
-all_sprites = pygame.sprite.Group()
+all_sprites1 = pygame.sprite.Group()
+all_sprites2 = pygame.sprite.Group()
 #personaje le paso la imagen y las filas y columnas del sprite. en una sola imagen
-personaje =  AnimationCharacter("./src/Characters/sprites.png",4,4)
-all_sprites.add(personaje)    
+personaje1 =  AnimationCharacter(".\src\Characters\sprite.png",4,4,"s","w","d","a")
+Personaje2 = AnimationCharacter(".\src\Characters\sprite.png",4,4,"DOWN","UP","RIGHT","LEFT")
+all_sprites1.add(personaje1)
+all_sprites2.add(Personaje2)
 
 running = True
 
@@ -153,8 +159,10 @@ while running:
             running = False 
     screen.fill('black')
     # dibuja los pesronajes
-    all_sprites.draw(screen)
-    all_sprites.update()
+    all_sprites1.draw(screen)
+    all_sprites1.update()
+    all_sprites2.draw(screen)
+    all_sprites2.update()
     
     
     # Actualizar pantalla. Dibuja sobre la imagen principal todo !! importante tener
